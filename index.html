@@ -3,53 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="GrowthGod — Social Media Intelligence Platform. Data-driven competitive insights for brands, agencies, and market researchers." />
+  <meta name="description" content="GrowthGod — Social Media Intelligence Platform. Data-driven insights for brands, agencies, and market researchers." />
   <meta name="robots" content="index, follow" />
   <title>GrowthGod — Social Media Intelligence Platform</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset ───────────────────────────────────────────── */
+    /* ── Reset & Base ────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    a { color: inherit; text-decoration: none; }
-    ul { list-style: none; }
 
-    /* ── Design Tokens ───────────────────────────────────── */
     :root {
-      --base:           #0A0A0A;
-      --raised:         #141414;
-      --inset:          #080808;
-      --overlay:        rgba(255,255,255,0.04);
-
-      --text-primary:   #F5F5F5;
-      --text-secondary: #A0A0A0;
-      --text-muted:     #666666;
-
-      --border:         rgba(255,255,255,0.08);
-      --border-hover:   rgba(255,255,255,0.14);
-
-      --accent:         #FFFFFF;
-      --accent-muted:   #888888;
-
-      --radius:         10px;
-      --nav-h:          60px;
+      --bg:          #0a0e1a;
+      --bg-card:     #111827;
+      --bg-elevated: #1a2236;
+      --gold:        #f5a623;
+      --gold-light:  #fbbf50;
+      --gold-dim:    rgba(245,166,35,0.15);
+      --gold-glow:   rgba(245,166,35,0.06);
+      --white:       #ffffff;
+      --text:        #e2e8f0;
+      --muted:       #94a3b8;
+      --border:      rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.14);
+      --shadow:      0 4px 24px rgba(0,0,0,0.45);
+      --radius:      12px;
+      --nav-h:       68px;
     }
 
-    /* ── Base ────────────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
     body {
-      background-color: var(--base);
-      color: var(--text-secondary);
+      background-color: var(--bg);
+      color: var(--text);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      line-height: 1.65;
-      font-size: 16px;
-      font-weight: 400;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Noise grain overlay */
+    /* Noise grain overlay for matte texture */
     body::after {
       content: '';
       position: fixed;
@@ -58,53 +49,60 @@
       z-index: 9999;
       opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 128px 128px;
     }
 
-    /* ── Layout ──────────────────────────────────────────── */
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* ── Utility ─────────────────────────────────────── */
     .container {
       max-width: 1140px;
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 24px;
     }
 
-    /* ── Typography ──────────────────────────────────────── */
-    .label {
+    .section-label {
       display: inline-block;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 20px;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid rgba(245,166,35,0.3);
+      border-radius: 30px;
+      padding: 4px 14px;
+      margin-bottom: 18px;
     }
 
-    .section-heading {
+    .section-title {
       font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-      font-weight: 600;
-      color: var(--text-primary);
+      font-weight: 700;
+      color: var(--white);
       line-height: 1.2;
       letter-spacing: -0.02em;
     }
 
-    .section-body {
-      font-size: 16px;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      max-width: 520px;
-      margin-top: 14px;
+    .section-subtitle {
+      font-size: 1.0625rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-top: 12px;
+      line-height: 1.7;
     }
 
-    /* ── Navigation ──────────────────────────────────────── */
+    .gold { color: var(--gold); }
+
+    /* ── Navigation ──────────────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       height: var(--nav-h);
       z-index: 100;
-      background: rgba(10,10,10,0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(10,14,26,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
 
@@ -116,81 +114,92 @@
     }
 
     .nav-logo {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--white);
       letter-spacing: -0.02em;
+    }
+
+    .nav-logo .logo-mark {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--gold), #d4821a);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: #0a0e1a;
+      flex-shrink: 0;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 32px;
     }
 
     .nav-links a {
-      font-size: 14px;
+      font-size: 0.9rem;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--muted);
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover { color: var(--white); }
 
     .nav-cta {
-      display: inline-flex;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--border);
-      padding: 8px 18px;
-      border-radius: var(--radius);
-      transition: background 0.2s, border-color 0.2s, color 0.2s !important;
-      white-space: nowrap;
+      background: var(--gold);
+      color: #0a0e1a !important;
+      font-weight: 700 !important;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-size: 0.875rem !important;
+      transition: background 0.2s, transform 0.15s !important;
     }
 
     .nav-cta:hover {
-      background: var(--accent) !important;
-      border-color: var(--accent) !important;
-      color: #0A0A0A !important;
+      background: var(--gold-light) !important;
+      transform: translateY(-1px);
     }
 
+    /* ── Hamburger (mobile) ──────────────────────────── */
     .nav-toggle {
       display: none;
       flex-direction: column;
       gap: 5px;
       cursor: pointer;
       padding: 4px;
-      background: none;
-      border: none;
     }
 
     .nav-toggle span {
       display: block;
       width: 22px;
       height: 2px;
-      background: var(--text-muted);
+      background: var(--muted);
       border-radius: 2px;
       transition: 0.25s;
     }
 
-    /* ── Hero ─────────────────────────────────────────────── */
+    /* ── Hero ─────────────────────────────────────────── */
     .hero {
-      padding-top: calc(var(--nav-h) + 100px);
-      padding-bottom: 120px;
+      padding-top: calc(var(--nav-h) + 80px);
+      padding-bottom: 100px;
       position: relative;
       overflow: hidden;
     }
 
-    .hero-orb {
+    .hero-bg {
       position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-10%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 55% 25%, rgba(245,166,35,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 60%, rgba(245,166,35,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(99,102,241,0.06) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -198,59 +207,63 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
-      gap: 72px;
+      gap: 60px;
       position: relative;
-      z-index: 1;
     }
 
-    .hero-heading {
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--text-primary);
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 22px;
     }
 
-    .hero-sub {
-      font-size: 17px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 440px;
-      margin-bottom: 36px;
-    }
-
-    .hero-platforms {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 40px;
-    }
-
-    .platform-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 12px;
-      letter-spacing: 0.02em;
-    }
-
-    .platform-pill .dot {
-      width: 5px;
-      height: 5px;
+    .hero-eyebrow .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--gold);
       border-radius: 50%;
-      background: var(--text-muted);
-      flex-shrink: 0;
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .hero-eyebrow span {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .hero-heading em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 1.0625rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 500px;
+      margin-bottom: 36px;
     }
 
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
     }
 
@@ -258,19 +271,581 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--accent);
-      color: #0A0A0A;
-      font-weight: 500;
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: var(--radius);
-      transition: opacity 0.2s, transform 0.15s;
-      white-space: nowrap;
+      background: var(--gold);
+      color: #0a0e1a;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      padding: 13px 26px;
+      border-radius: 9px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px rgba(245,166,35,0.28);
     }
 
     .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245,166,35,0.38);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 13px 26px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.2);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* Hero visual / mock dashboard */
+    .hero-visual {
+      position: relative;
+    }
+
+    .dashboard-mock {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow), 0 0 80px rgba(245,166,35,0.04);
+    }
+
+    .mock-topbar {
+      background: var(--bg-elevated);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mock-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .mock-dot.red   { background: #ff5f57; }
+    .mock-dot.yellow{ background: #febc2e; }
+    .mock-dot.green { background: #28c840; }
+
+    .mock-url {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      height: 22px;
+      margin-left: 8px;
+    }
+
+    .mock-body { padding: 20px; }
+
+    .mock-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .mock-stat {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 14px 12px;
+      border: 1px solid var(--border);
+    }
+
+    .mock-stat .label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .mock-stat .value {
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .mock-stat .trend {
+      font-size: 11px;
+      color: #22c55e;
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .mock-chart-area {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .mock-chart-title {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .mock-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 70px;
+    }
+
+    .mock-bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(to top, rgba(245,166,35,0.5), rgba(245,166,35,0.15));
+      min-height: 8px;
+    }
+
+    .mock-table {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .mock-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .mock-row:last-child { border-bottom: none; }
+
+    .mock-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .mock-row-text { flex: 1; }
+
+    .mock-row-text .name {
+      color: var(--text);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .mock-row-text .sub {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .mock-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .badge-up   { background: rgba(34,197,94,0.15);  color: #22c55e; }
+    .badge-flat { background: rgba(245,166,35,0.15);  color: var(--gold); }
+    .badge-down { background: rgba(239,68,68,0.12);   color: #f87171; }
+
+    /* ── Trust Bar ───────────────────────────────────── */
+    .trust-bar {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.015);
+    }
+
+    .trust-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .trust-label {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .trust-stats {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .trust-stat {
+      text-align: center;
+    }
+
+    .trust-stat .num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .trust-stat .desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .trust-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+    }
+
+    /* ── Features Section ────────────────────────────── */
+    .section {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(245,166,35,0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(245,166,35,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .feature-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .feature-list li::before {
+      content: '→';
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── How It Works ─────────────────────────────────── */
+    .how-section {
+      padding: 100px 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(245,166,35,0.04) 0%, transparent 70%);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 38px;
+      left: calc(16.66% + 24px);
+      right: calc(16.66% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(245,166,35,0.3) 20%,
+        rgba(245,166,35,0.3) 80%,
+        transparent
+      );
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: var(--bg-card);
+      border: 2px solid rgba(245,166,35,0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin: 0 auto 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Use Cases ────────────────────────────────────── */
+    .use-cases-section {
+      padding: 100px 0;
+    }
+
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .use-case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      gap: 20px;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+
+    .use-case-card:hover {
+      border-color: rgba(245,166,35,0.2);
+      transform: translateY(-3px);
+    }
+
+    .use-case-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .use-case-body {}
+
+    .use-case-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .use-case-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border-radius: 20px;
+      padding: 2px 9px;
+      margin-bottom: 10px;
+    }
+
+    .use-case-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Social Proof / Testimonials ─────────────────── */
+    .social-proof {
+      padding: 80px 0;
+      background: linear-gradient(135deg, rgba(245,166,35,0.04) 0%, transparent 50%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .testimonial-quote {
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0a0e1a;
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .author-role {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    /* ── CTA Banner ──────────────────────────────────── */
+    .cta-section {
+      padding: 100px 0;
+    }
+
+    .cta-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(245,166,35,0.18);
+      border-radius: 18px;
+      padding: 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(245,166,35,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-heading {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .cta-sub {
+      font-size: 1.0625rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .btn-outline {
@@ -278,795 +853,593 @@
       align-items: center;
       gap: 8px;
       background: transparent;
-      color: var(--text-primary);
-      font-weight: 500;
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      transition: border-color 0.2s, transform 0.15s;
-      white-space: nowrap;
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 13px 26px;
+      border-radius: 9px;
+      border: 1px solid rgba(245,166,35,0.35);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
     }
 
     .btn-outline:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-1px);
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      transform: translateY(-2px);
     }
 
-    /* ── Mock Dashboard ─────────────────────────────────── */
-    .hero-visual {
-      position: relative;
-    }
-
-    .dashboard-mock {
-      background: var(--raised);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .mock-topbar {
-      background: var(--inset);
-      padding: 11px 16px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mock-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--overlay);
-      border: 1px solid var(--border);
-    }
-
-    .mock-url-bar {
-      flex: 1;
-      height: 18px;
-      background: var(--overlay);
-      border-radius: 4px;
-      margin-left: 8px;
-    }
-
-    .mock-body { padding: 18px; }
-
-    .mock-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .mock-stat {
-      background: var(--inset);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 10px;
-    }
-
-    .mock-stat .s-label {
-      font-size: 9px;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .mock-stat .s-value {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .mock-stat .s-delta {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 2px;
-      font-weight: 500;
-    }
-
-    .mock-chart-area {
-      background: var(--inset);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 10px;
-    }
-
-    .mock-chart-title {
-      font-size: 10px;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .mock-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 5px;
-      height: 60px;
-    }
-
-    .mock-bar {
-      flex: 1;
-      border-radius: 3px 3px 0 0;
-      background: var(--border);
-      min-height: 6px;
-      transition: background 0.2s;
-    }
-
-    .mock-bar.active {
-      background: var(--text-primary);
-    }
-
-    .mock-table {
-      background: var(--inset);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .mock-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      border-bottom: 1px solid var(--border);
-      font-size: 11px;
-    }
-
-    .mock-row:last-child { border-bottom: none; }
-
-    .mock-avatar-block {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--overlay);
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .mock-row-name {
-      flex: 1;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .mock-badge {
-      font-size: 10px;
-      font-weight: 500;
-      padding: 2px 7px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
-    .mock-badge.up {
-      color: var(--text-secondary);
-      border-color: var(--border-hover);
-    }
-
-    /* ── Trust Bar ──────────────────────────────────────── */
-    .trust-bar {
-      background: var(--raised);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 0;
-    }
-
-    .trust-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0;
-    }
-
-    .trust-item {
-      flex: 1;
-      text-align: center;
-      position: relative;
-    }
-
-    .trust-item + .trust-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 36px;
-      background: var(--border);
-    }
-
-    .trust-item .t-value {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .trust-item .t-label {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      letter-spacing: 0.02em;
-    }
-
-    /* ── Section Base ───────────────────────────────────── */
-    section {
-      padding: 120px 0;
-    }
-
-    /* ── Features ───────────────────────────────────────── */
-    .features-header {
-      max-width: 560px;
-      margin-bottom: 56px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: calc(var(--radius) + 2px);
-      overflow: hidden;
-    }
-
-    .feature-card {
-      background: var(--raised);
-      padding: 36px 32px;
-      transition: background 0.2s;
-    }
-
-    .feature-card:hover {
-      background: #1a1a1a;
-    }
-
-    .feature-card:nth-child(1) { border-radius: calc(var(--radius)) 0 0 0; }
-    .feature-card:nth-child(2) { border-radius: 0 calc(var(--radius)) 0 0; }
-    .feature-card:nth-child(3) { border-radius: 0 0 0 calc(var(--radius)); }
-    .feature-card:nth-child(4) { border-radius: 0 0 calc(var(--radius)) 0; }
-
-    .feature-number {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .feature-title {
-      font-size: 19px;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
-    }
-
-    .feature-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      margin-bottom: 20px;
-    }
-
-    .feature-bullets {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .feature-bullets li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .feature-bullets li::before {
-      content: '—';
-      color: var(--text-muted);
-      flex-shrink: 0;
-      font-size: 12px;
-      margin-top: 1px;
-    }
-
-    /* ── How It Works ───────────────────────────────────── */
-    .how-header {
-      text-align: center;
-      max-width: 500px;
-      margin: 0 auto 72px;
-    }
-
-    .steps {
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-    }
-
-    .steps::before {
-      content: '';
-      position: absolute;
-      top: 22px;
-      left: calc(16.66% + 16px);
-      right: calc(16.66% + 16px);
-      height: 1px;
-      background: var(--border);
-    }
-
-    .step {
-      position: relative;
-    }
-
-    .step-number {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--raised);
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 24px;
-      font-variant-numeric: tabular-nums;
-      /* outline effect */
-      -webkit-text-stroke: 1px var(--border);
-    }
-
-    .step-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      margin-bottom: 10px;
-    }
-
-    .step-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.65;
-    }
-
-    /* ── Use Cases ──────────────────────────────────────── */
-    .use-cases-header {
-      max-width: 560px;
-      margin-bottom: 56px;
-    }
-
-    .use-cases-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .use-case-card {
-      background: var(--raised);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 24px;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .use-case-card:hover {
-      border-color: var(--border-hover);
-      background: #1a1a1a;
-    }
-
-    .use-case-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 10px;
-      letter-spacing: -0.01em;
-    }
-
-    .use-case-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* ── Testimonials ───────────────────────────────────── */
-    .testimonials-header {
-      text-align: center;
-      max-width: 460px;
-      margin: 0 auto 56px;
-    }
-
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .testimonial-card {
-      background: var(--raised);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 24px;
-    }
-
-    .testimonial-stars {
-      font-size: 13px;
-      color: var(--text-muted);
-      letter-spacing: 2px;
-      margin-bottom: 16px;
-    }
-
-    .testimonial-quote {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      font-style: italic;
-      margin-bottom: 20px;
-    }
-
-    .testimonial-author {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .testimonial-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .testimonial-role {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* ── CTA Section ───────────────────────────────────── */
-    .cta-section {
-      background: var(--raised);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .cta-inner {
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-
-    .cta-heading {
-      font-size: clamp(1.75rem, 3vw, 2.25rem);
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
-    }
-
-    .cta-sub {
-      font-size: 16px;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      margin-bottom: 36px;
-    }
-
-    /* ── Footer ─────────────────────────────────────────── */
+    /* ── Footer ──────────────────────────────────────── */
     footer {
-      padding: 72px 0 48px;
+      background: var(--bg-card);
       border-top: 1px solid var(--border);
+      padding: 56px 0 32px;
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1fr repeat(4, auto);
-      gap: 64px;
-      margin-bottom: 64px;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
     }
 
-    .footer-brand .logo {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
+    .footer-brand {}
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.0625rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 14px;
     }
 
-    .footer-brand p {
+    .footer-logo .logo-mark {
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--gold), #d4821a);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 220px;
+      font-weight: 900;
+      color: #0a0e1a;
     }
 
-    .footer-col h4 {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: 0.02em;
+    .footer-tagline {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 260px;
+      margin-bottom: 20px;
+    }
+
+    .footer-contact a {
+      font-size: 0.875rem;
+      color: var(--gold);
+      transition: color 0.2s;
+    }
+
+    .footer-contact a:hover { color: var(--gold-light); }
+
+    .footer-col-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
       margin-bottom: 16px;
     }
 
-    .footer-col ul {
+    .footer-links {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .footer-col ul li a {
-      font-size: 13px;
-      color: var(--text-muted);
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
       transition: color 0.2s;
     }
 
-    .footer-col ul li a:hover {
-      color: var(--text-secondary);
-    }
+    .footer-links a:hover { color: var(--text); }
 
     .footer-bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 32px;
+      padding-top: 28px;
       border-top: 1px solid var(--border);
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .footer-bottom p {
-      font-size: 13px;
-      color: var(--text-muted);
+    .footer-copy {
+      font-size: 0.8125rem;
+      color: var(--muted);
     }
 
-    /* ── Mobile Menu ────────────────────────────────────── */
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: var(--nav-h);
-      left: 0; right: 0;
-      background: rgba(10,10,10,0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 24px 32px;
-      z-index: 99;
-      flex-direction: column;
-      gap: 0;
+    .footer-legal {
+      display: flex;
+      gap: 20px;
     }
 
-    .mobile-menu.open { display: flex; }
-
-    .mobile-menu a {
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
+    .footer-legal a {
+      font-size: 0.8125rem;
+      color: var(--muted);
       transition: color 0.2s;
     }
 
-    .mobile-menu a:last-child { border-bottom: none; }
-    .mobile-menu a:hover { color: var(--text-primary); }
+    .footer-legal a:hover { color: var(--text); }
 
-    /* ── Responsive ─────────────────────────────────────── */
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .features-grid     { grid-template-columns: 1fr 1fr; }
+      .footer-grid       { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-toggle { display: flex; }
+      .nav-links         { display: none; }
+      .nav-toggle        { display: flex; }
 
-      .hero {
-        padding-top: calc(var(--nav-h) + 60px);
-        padding-bottom: 80px;
-      }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-
-      .hero-heading { font-size: 2.5rem; }
-
-      .hero-visual { order: -1; }
-
-      .trust-inner {
-        flex-wrap: wrap;
-        gap: 32px;
-        justify-content: center;
-      }
-
-      .trust-item {
-        flex: 0 0 40%;
-      }
-
-      .trust-item + .trust-item::before { display: none; }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .feature-card:nth-child(1),
-      .feature-card:nth-child(2),
-      .feature-card:nth-child(3),
-      .feature-card:nth-child(4) {
-        border-radius: 0;
-      }
-
-      .steps {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-
-      .steps::before { display: none; }
-
-      .use-cases-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .testimonials-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-      }
-
-      .footer-brand {
-        grid-column: 1 / -1;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-        gap: 12px;
-        text-align: center;
-      }
-
-      section { padding: 80px 0; }
+      .hero-grid         { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual       { display: none; }
+      .features-grid     { grid-template-columns: 1fr; }
+      .steps-grid        { grid-template-columns: 1fr; }
+      .steps-grid::before{ display: none; }
+      .use-cases-grid    { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-grid       { grid-template-columns: 1fr 1fr; }
+      .cta-box           { padding: 40px 24px; }
     }
 
     @media (max-width: 480px) {
-      .container { padding: 0 20px; }
-
-      .hero-heading { font-size: 2rem; }
-
-      .hero-actions { flex-direction: column; }
-
-      .btn-primary, .btn-outline { text-align: center; justify-content: center; }
-
-      .use-cases-grid { grid-template-columns: 1fr; }
-
-      .trust-item { flex: 0 0 100%; }
-
-      .footer-grid { grid-template-columns: 1fr; }
-
-      section { padding: 60px 0; }
+      .footer-grid       { grid-template-columns: 1fr; }
+      .footer-bottom     { flex-direction: column; text-align: center; }
     }
+
+    /* ── Misc Decorative ──────────────────────────────── */
+    .divider-line {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    .platform-logos {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .platform-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 5px 13px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .platform-pill .dot2 {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .dot-instagram { background: #e1306c; }
+    .dot-tiktok    { background: #ff0050; }
+    .dot-youtube   { background: #ff0000; }
+    .dot-twitter   { background: #1d9bf0; }
+    .dot-linkedin  { background: #0a66c2; }
+
+    .announce-bar {
+      background: linear-gradient(90deg, rgba(245,166,35,0.1), rgba(245,166,35,0.05));
+      border-bottom: 1px solid rgba(245,166,35,0.15);
+      padding: 10px 0;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    .announce-bar strong {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .announce-bar a {
+      color: var(--gold);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
   </style>
 </head>
 <body>
 
-  <!-- ── Navigation ──────────────────────────────────── -->
+  <!-- Announcement Bar -->
+  <div class="announce-bar">
+    <strong>New:</strong> GrowthGod Intelligence Suite 3.0 is now available — cross-platform benchmarking with AI-powered trend detection.
+    <a href="#features">Learn what's new &rarr;</a>
+  </div>
+
+  <!-- Navigation -->
   <nav>
     <div class="container">
       <div class="nav-inner">
-        <a href="#" class="nav-logo">GrowthGod</a>
+        <a href="#" class="nav-logo">
+          <div class="logo-mark">G</div>
+          GrowthGod
+        </a>
 
-        <div class="nav-links">
-          <a href="#features">Features</a>
-          <a href="#how-it-works">How It Works</a>
-          <a href="#use-cases">Use Cases</a>
-          <a href="#" class="nav-cta">Request Demo</a>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#use-cases">Use Cases</a></li>
+          <li><a href="#contact" class="nav-cta">Request Demo</a></li>
+        </ul>
+
+        <div class="nav-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-
-        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
       </div>
     </div>
   </nav>
 
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#features" onclick="toggleMenu()">Features</a>
-    <a href="#how-it-works" onclick="toggleMenu()">How It Works</a>
-    <a href="#use-cases" onclick="toggleMenu()">Use Cases</a>
-    <a href="#" onclick="toggleMenu()">Request Demo</a>
-  </div>
-
-  <!-- ── Hero ─────────────────────────────────────────── -->
+  <!-- ═══ HERO ═══ -->
   <section class="hero">
-    <div class="hero-orb"></div>
+    <div class="hero-bg"></div>
     <div class="container">
       <div class="hero-grid">
-
-        <!-- Left: Copy -->
-        <div class="hero-content">
-          <span class="label">Social Media Intelligence</span>
-
-          <h1 class="hero-heading">Unlock Social Media<br>Intelligence at Scale</h1>
-
-          <p class="hero-sub">
-            Track competitors, decode audience behavior, and surface the signals that actually move the needle — across every platform that matters.
-          </p>
-
-          <div class="hero-platforms">
-            <span class="platform-pill"><span class="dot"></span>Instagram</span>
-            <span class="platform-pill"><span class="dot"></span>TikTok</span>
-            <span class="platform-pill"><span class="dot"></span>YouTube</span>
-            <span class="platform-pill"><span class="dot"></span>X / Twitter</span>
-            <span class="platform-pill"><span class="dot"></span>LinkedIn</span>
+        <!-- Left copy -->
+        <div>
+          <div class="hero-eyebrow">
+            <span class="dot"></span>
+            <span>Social Media Intelligence</span>
           </div>
 
-          <div class="hero-actions">
-            <a href="#" class="btn-primary">Request a Demo &rarr;</a>
-            <a href="#how-it-works" class="btn-outline">See How It Works</a>
+          <h1 class="hero-heading">
+            Unlock Social Media<br>
+            <em>Intelligence at Scale</em>
+          </h1>
+
+          <p class="hero-sub">
+            Data-driven insights for brands, agencies, and researchers.
+            Monitor competitors, track engagement trends, and discover
+            audience demographics across every major social platform.
+          </p>
+
+          <div class="platform-logos">
+            <div class="platform-pill"><span class="dot2 dot-instagram"></span>Instagram</div>
+            <div class="platform-pill"><span class="dot2 dot-tiktok"></span>TikTok</div>
+            <div class="platform-pill"><span class="dot2 dot-youtube"></span>YouTube</div>
+            <div class="platform-pill"><span class="dot2 dot-twitter"></span>X / Twitter</div>
+            <div class="platform-pill"><span class="dot2 dot-linkedin"></span>LinkedIn</div>
+          </div>
+
+          <div class="hero-actions" style="margin-top:32px;">
+            <a href="#contact" class="btn-primary">Request a Demo &#8594;</a>
+            <a href="#how-it-works" class="btn-secondary">See How It Works</a>
           </div>
         </div>
 
-        <!-- Right: Mock Dashboard -->
+        <!-- Right: mock dashboard -->
         <div class="hero-visual">
           <div class="dashboard-mock">
             <div class="mock-topbar">
-              <div class="mock-dot"></div>
-              <div class="mock-dot"></div>
-              <div class="mock-dot"></div>
-              <div class="mock-url-bar"></div>
+              <div class="mock-dot red"></div>
+              <div class="mock-dot yellow"></div>
+              <div class="mock-dot green"></div>
+              <div class="mock-url"></div>
             </div>
             <div class="mock-body">
               <div class="mock-stats">
                 <div class="mock-stat">
-                  <div class="s-label">Reach</div>
-                  <div class="s-value">5.2M</div>
-                  <div class="s-delta">+12.4% vs last period</div>
+                  <div class="label">Profiles Tracked</div>
+                  <div class="value">84.2K</div>
+                  <div class="trend">&#8593; +2.1% this week</div>
                 </div>
                 <div class="mock-stat">
-                  <div class="s-label">Eng. Rate</div>
-                  <div class="s-value">4.8%</div>
-                  <div class="s-delta">+0.6pp vs avg</div>
+                  <div class="label">Avg Engagement</div>
+                  <div class="value">4.7%</div>
+                  <div class="trend">&#8593; +0.3% vs last mo</div>
                 </div>
                 <div class="mock-stat">
-                  <div class="s-label">Accounts</div>
-                  <div class="s-value">247</div>
-                  <div class="s-delta">tracked this week</div>
+                  <div class="label">Competitors</div>
+                  <div class="value">12</div>
+                  <div class="trend" style="color:var(--gold);">3 new signals</div>
                 </div>
               </div>
 
               <div class="mock-chart-area">
-                <div class="mock-chart-title">Engagement Trend — 30 Days</div>
+                <div class="mock-chart-title">Audience Growth Trend &mdash; Last 30 days</div>
                 <div class="mock-bars">
+                  <div class="mock-bar" style="height:35%"></div>
+                  <div class="mock-bar" style="height:42%"></div>
                   <div class="mock-bar" style="height:38%"></div>
-                  <div class="mock-bar" style="height:52%"></div>
-                  <div class="mock-bar" style="height:44%"></div>
-                  <div class="mock-bar" style="height:60%"></div>
-                  <div class="mock-bar" style="height:48%"></div>
-                  <div class="mock-bar" style="height:72%"></div>
                   <div class="mock-bar" style="height:55%"></div>
+                  <div class="mock-bar" style="height:48%"></div>
+                  <div class="mock-bar" style="height:60%"></div>
+                  <div class="mock-bar" style="height:52%"></div>
                   <div class="mock-bar" style="height:68%"></div>
+                  <div class="mock-bar" style="height:72%"></div>
+                  <div class="mock-bar" style="height:65%"></div>
                   <div class="mock-bar" style="height:80%"></div>
-                  <div class="mock-bar active" style="height:100%"></div>
+                  <div class="mock-bar" style="height:88%"></div>
+                  <div class="mock-bar" style="height:95%"></div>
+                  <div class="mock-bar" style="height:100%"></div>
                 </div>
               </div>
 
               <div class="mock-table">
                 <div class="mock-row">
-                  <div class="mock-avatar-block"></div>
-                  <div class="mock-row-name">@competitor_a</div>
-                  <div class="mock-badge up">+18.2%</div>
+                  <div class="mock-avatar" style="background:linear-gradient(135deg,#f5a623,#d4821a)">N</div>
+                  <div class="mock-row-text">
+                    <div class="name">Nike Running</div>
+                    <div class="sub">8.4M followers &bull; Fitness</div>
+                  </div>
+                  <div class="mock-badge badge-up">&#8593; 3.1%</div>
                 </div>
                 <div class="mock-row">
-                  <div class="mock-avatar-block"></div>
-                  <div class="mock-row-name">@competitor_b</div>
-                  <div class="mock-badge">+4.1%</div>
+                  <div class="mock-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">A</div>
+                  <div class="mock-row-text">
+                    <div class="name">Adidas Originals</div>
+                    <div class="sub">11.2M followers &bull; Fashion</div>
+                  </div>
+                  <div class="mock-badge badge-flat">&mdash; 0.1%</div>
                 </div>
                 <div class="mock-row">
-                  <div class="mock-avatar-block"></div>
-                  <div class="mock-row-name">@competitor_c</div>
-                  <div class="mock-badge">-2.3%</div>
+                  <div class="mock-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">U</div>
+                  <div class="mock-row-text">
+                    <div class="name">Under Armour</div>
+                    <div class="sub">3.9M followers &bull; Fitness</div>
+                  </div>
+                  <div class="mock-badge badge-down">&#8595; 1.4%</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRUST BAR ═══ -->
+  <div class="trust-bar">
+    <div class="container">
+      <div class="trust-inner">
+        <div class="trust-stats">
+          <div class="trust-stat">
+            <div class="num">200+</div>
+            <div class="desc">Marketing teams worldwide</div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat">
+            <div class="num">5B+</div>
+            <div class="desc">Public data points processed monthly</div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat">
+            <div class="num">50+</div>
+            <div class="desc">Industries covered</div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat">
+            <div class="num">99.7%</div>
+            <div class="desc">Data accuracy rate</div>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-stat">
+            <div class="num">5</div>
+            <div class="desc">Major social platforms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURES ═══ -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Platform Capabilities</div>
+        <h2 class="section-title">Everything your team needs to<br>understand the social landscape</h2>
+        <p class="section-subtitle" style="margin:0 auto;">
+          From real-time monitoring to long-term trend analysis, GrowthGod
+          brings every insight your strategy team needs into one unified platform.
+        </p>
+      </div>
+
+      <div class="features-grid">
+
+        <!-- Card 1 -->
+        <div class="feature-card">
+          <div class="feature-icon">&#128270;</div>
+          <div class="feature-title">Competitive Intelligence</div>
+          <div class="feature-desc">
+            Monitor competitor content performance, audience growth trajectories,
+            and publishing cadence across every major platform. Know exactly where
+            rivals are winning before it shows up in your numbers.
+          </div>
+          <ul class="feature-list">
+            <li>Real-time competitor benchmarking</li>
+            <li>Share-of-voice analysis by topic</li>
+            <li>Historical performance comparisons</li>
+            <li>Cross-platform unified view</li>
+          </ul>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card">
+          <div class="feature-icon">&#128202;</div>
+          <div class="feature-title">Audience Analytics</div>
+          <div class="feature-desc">
+            Understand the demographic composition, geographic distribution, and
+            behavioral patterns of any audience segment. Go beyond vanity metrics
+            to the data that drives real business decisions.
+          </div>
+          <ul class="feature-list">
+            <li>Age, gender &amp; location breakdowns</li>
+            <li>Interest graph mapping</li>
+            <li>Engagement time-of-day heatmaps</li>
+            <li>Audience overlap detection</li>
+          </ul>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card">
+          <div class="feature-icon">&#127942;</div>
+          <div class="feature-title">Content Performance Benchmarking</div>
+          <div class="feature-desc">
+            Track which content formats, topics, and creative styles resonate
+            most with target audiences across verticals. Inform creative briefs
+            with data, not guesswork.
+          </div>
+          <ul class="feature-list">
+            <li>Format-level performance (video, image, carousel)</li>
+            <li>Caption and hashtag effectiveness scores</li>
+            <li>Industry-specific benchmarks</li>
+            <li>Virality coefficient tracking</li>
+          </ul>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feature-card">
+          <div class="feature-icon">&#127760;</div>
+          <div class="feature-title">Market Research &amp; Trend Discovery</div>
+          <div class="feature-desc">
+            Identify trending topics, emerging creators, and shifting audience
+            interests before they peak. Surface market opportunities your
+            competitors haven't spotted yet.
+          </div>
+          <ul class="feature-list">
+            <li>Early-stage trend detection</li>
+            <li>Emerging creator identification</li>
+            <li>Topic velocity scoring</li>
+            <li>Sentiment &amp; narrative tracking</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="how-section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">From raw data to actionable insights<br>in three steps</h2>
+        <p class="section-subtitle" style="margin:0 auto;">
+          GrowthGod's pipeline is built for scale. We ingest millions of
+          public data points daily, process them through AI analysis layers,
+          and surface the signal that matters for your strategy.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-title">Connect Your Data Sources</div>
+          <div class="step-desc">
+            Integrate with public social media APIs and authorized data
+            feeds. Point GrowthGod at the brands, creators, and topics
+            you care about — setup takes minutes, not days.
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-title">AI-Powered Analysis</div>
+          <div class="step-desc">
+            Our platform processes millions of publicly available data
+            points daily. Machine learning models extract patterns,
+            surface anomalies, and score trends in near real-time.
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-title">Actionable Reports</div>
+          <div class="step-desc">
+            Receive clear insights through customizable dashboards,
+            scheduled reports, and Slack or email alerts. Share findings
+            with stakeholders in one click.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ USE CASES ═══ -->
+  <section class="use-cases-section" id="use-cases">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Who Uses GrowthGod</div>
+        <h2 class="section-title">Built for teams that need<br>social data at scale</h2>
+      </div>
+
+      <div class="use-cases-grid">
+
+        <div class="use-case-card">
+          <div class="use-case-icon">&#127970;</div>
+          <div class="use-case-body">
+            <div class="use-case-tag">Marketing Agencies</div>
+            <div class="use-case-title">Competitive Benchmarking for Client Campaigns</div>
+            <div class="use-case-desc">
+              Win pitches and retain clients by backing every recommendation
+              with verified market data. GrowthGod gives agencies a single
+              source of truth for cross-platform competitive analysis across
+              all managed accounts.
+            </div>
+          </div>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">&#128142;</div>
+          <div class="use-case-body">
+            <div class="use-case-tag">Brand Managers</div>
+            <div class="use-case-title">Brand Mention &amp; Sentiment Tracking</div>
+            <div class="use-case-desc">
+              Stay ahead of brand narrative by monitoring mentions, tracking
+              sentiment shifts, and spotting PR risks before they escalate.
+              Get instant alerts when your brand enters trending conversations.
+            </div>
+          </div>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">&#128300;</div>
+          <div class="use-case-body">
+            <div class="use-case-tag">Market Researchers</div>
+            <div class="use-case-title">Social Media Trend &amp; Behavior Analysis</div>
+            <div class="use-case-desc">
+              Conduct rigorous audience behavior studies using rich, structured
+              datasets derived from public social signals. Export analysis-ready
+              datasets for academic, journalistic, or enterprise research purposes.
+            </div>
+          </div>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">&#128737;</div>
+          <div class="use-case-body">
+            <div class="use-case-tag">Ad Verification</div>
+            <div class="use-case-title">Brand-Safe Placement Intelligence</div>
+            <div class="use-case-desc">
+              Verify that ad placements appear in contextually appropriate,
+              brand-safe environments. Cross-reference influencer profiles and
+              content categories to ensure campaigns meet compliance and
+              safety standards.
             </div>
           </div>
         </div>
@@ -1075,198 +1448,61 @@
     </div>
   </section>
 
-  <!-- ── Trust Bar ─────────────────────────────────────── -->
-  <div class="trust-bar">
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="social-proof">
     <div class="container">
-      <div class="trust-inner">
-        <div class="trust-item">
-          <div class="t-value">200+</div>
-          <div class="t-label">Brands tracked</div>
-        </div>
-        <div class="trust-item">
-          <div class="t-value">5B+</div>
-          <div class="t-label">Data points indexed</div>
-        </div>
-        <div class="trust-item">
-          <div class="t-value">50+</div>
-          <div class="t-label">Industries covered</div>
-        </div>
-        <div class="trust-item">
-          <div class="t-value">99.7%</div>
-          <div class="t-label">Platform uptime</div>
-        </div>
-        <div class="trust-item">
-          <div class="t-value">5</div>
-          <div class="t-label">Social networks</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── Features ──────────────────────────────────────── -->
-  <section id="features">
-    <div class="container">
-      <div class="features-header">
-        <span class="label">Capabilities</span>
-        <h2 class="section-heading">Everything you need to stay ahead of the market</h2>
-        <p class="section-body">Four intelligence modules that work together to give you an unfair view of your competitive landscape.</p>
-      </div>
-
-      <div class="features-grid">
-
-        <div class="feature-card">
-          <div class="feature-number">01</div>
-          <h3 class="feature-title">Competitive Intelligence</h3>
-          <p class="feature-desc">Monitor competitor accounts across all major platforms. Know what they post, when they post, and what actually resonates with their audiences.</p>
-          <ul class="feature-bullets">
-            <li>Real-time follower and engagement tracking</li>
-            <li>Content cadence and format analysis</li>
-            <li>Share-of-voice breakdowns by keyword</li>
-            <li>Side-by-side performance comparisons</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-number">02</div>
-          <h3 class="feature-title">Audience Analytics</h3>
-          <p class="feature-desc">Go beyond vanity metrics. Understand the demographic and psychographic makeup of any public audience — yours or a competitor's.</p>
-          <ul class="feature-bullets">
-            <li>Age, location, and interest segmentation</li>
-            <li>Audience overlap and affinity mapping</li>
-            <li>Follower authenticity and quality scoring</li>
-            <li>Growth velocity and churn signals</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-number">03</div>
-          <h3 class="feature-title">Content Performance Benchmarking</h3>
-          <p class="feature-desc">Compare your content output against industry benchmarks. Find the gaps and opportunities your team is missing every week.</p>
-          <ul class="feature-bullets">
-            <li>Industry-specific engagement baselines</li>
-            <li>Format performance by platform and niche</li>
-            <li>Optimal posting time recommendations</li>
-            <li>Trending topic and hashtag intelligence</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-number">04</div>
-          <h3 class="feature-title">Market Research</h3>
-          <p class="feature-desc">Turn social data into strategic insight. Surface emerging trends before they peak and validate assumptions with real behavioral signals.</p>
-          <ul class="feature-bullets">
-            <li>Trend forecasting from leading social signals</li>
-            <li>Sentiment analysis at scale</li>
-            <li>Influencer landscape mapping</li>
-            <li>Campaign performance attribution</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── How It Works ───────────────────────────────────── -->
-  <section id="how-it-works" style="background: var(--raised); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-    <div class="container">
-      <div class="how-header">
-        <span class="label">Process</span>
-        <h2 class="section-heading">Up and running in under ten minutes</h2>
-      </div>
-
-      <div class="steps">
-
-        <div class="step">
-          <div class="step-number">01</div>
-          <h3 class="step-title">Connect your accounts</h3>
-          <p class="step-desc">Add the accounts you want to track — yours and your competitors'. We handle authentication and start pulling data immediately. No scripts, no scraping to set up.</p>
-        </div>
-
-        <div class="step">
-          <div class="step-number">02</div>
-          <h3 class="step-title">We index the data</h3>
-          <p class="step-desc">GrowthGod continuously collects engagement, audience, and content data across all connected accounts. Historical data is available from day one for accounts with public histories.</p>
-        </div>
-
-        <div class="step">
-          <div class="step-number">03</div>
-          <h3 class="step-title">Surface the insights</h3>
-          <p class="step-desc">Your dashboard surfaces what matters: where you are ahead, where you are falling behind, and where the next opportunity is. Exportable reports available at any time.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Use Cases ──────────────────────────────────────── -->
-  <section id="use-cases">
-    <div class="container">
-      <div class="use-cases-header">
-        <span class="label">Use Cases</span>
-        <h2 class="section-heading">Built for the people who live in the data</h2>
-        <p class="section-body">GrowthGod fits into existing workflows without adding overhead. Here is who uses it and why.</p>
-      </div>
-
-      <div class="use-cases-grid">
-
-        <div class="use-case-card">
-          <h3 class="use-case-title">Marketing Agencies</h3>
-          <p class="use-case-desc">Deliver client reports that prove ROI. Show competitive context alongside your own performance and build cases for budget increases with data your clients can actually understand.</p>
-        </div>
-
-        <div class="use-case-card">
-          <h3 class="use-case-title">Brand Managers</h3>
-          <p class="use-case-desc">Know exactly how your brand stands in the conversation. Monitor sentiment shifts, catch competitive moves early, and align your content strategy to what actually works in your category.</p>
-        </div>
-
-        <div class="use-case-card">
-          <h3 class="use-case-title">Market Researchers</h3>
-          <p class="use-case-desc">Replace manual tracking with structured, exportable data. Validate hypotheses with behavioral signals from millions of public interactions across every major platform.</p>
-        </div>
-
-        <div class="use-case-card">
-          <h3 class="use-case-title">Ad Verification</h3>
-          <p class="use-case-desc">Confirm that influencer campaigns deliver what was promised. Track organic reach, engagement authenticity, and audience quality before, during, and after every activation.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Testimonials ───────────────────────────────────── -->
-  <section style="background: var(--raised); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-    <div class="container">
-      <div class="testimonials-header">
-        <span class="label">What people say</span>
-        <h2 class="section-heading">Trusted by teams who move fast</h2>
+      <div class="section-header">
+        <div class="section-label">Customer Voices</div>
+        <h2 class="section-title">Trusted by 200+ marketing<br>teams worldwide</h2>
       </div>
 
       <div class="testimonials-grid">
 
         <div class="testimonial-card">
           <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testimonial-quote">"We cut our weekly competitive reporting from three hours to about fifteen minutes. The data is deeper than what we were pulling manually and it updates itself."</p>
+          <p class="testimonial-quote">
+            "GrowthGod transformed how we present competitive intelligence to
+            our clients. The depth of insight is unmatched — we now walk into
+            pitches with data our competitors simply don't have."
+          </p>
           <div class="testimonial-author">
-            <span class="testimonial-name">Sarah Chen</span>
-            <span class="testimonial-role">Head of Social, Meridian Agency</span>
+            <div class="author-avatar" style="background:linear-gradient(135deg,#f5a623,#d4821a)">SR</div>
+            <div>
+              <div class="author-name">Sarah R.</div>
+              <div class="author-role">Strategy Director, Momentum Agency</div>
+            </div>
           </div>
         </div>
 
         <div class="testimonial-card">
           <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testimonial-quote">"The audience overlap feature alone justified the cost. We found that two of our biggest competitors share 40% of their audience — that changed our entire positioning strategy."</p>
+          <p class="testimonial-quote">
+            "The trend detection layer is genuinely impressive. We identified
+            a major content shift in our category six weeks before our
+            competitors reacted. That's the kind of edge that wins market share."
+          </p>
           <div class="testimonial-author">
-            <span class="testimonial-name">Marcus Okonkwo</span>
-            <span class="testimonial-role">Brand Director, Revive Consumer</span>
+            <div class="author-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">MK</div>
+            <div>
+              <div class="author-name">Marcus K.</div>
+              <div class="author-role">Head of Digital, consumer brand</div>
+            </div>
           </div>
         </div>
 
         <div class="testimonial-card">
           <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testimonial-quote">"I use it for influencer vetting before we commit spend. Being able to check audience authenticity and engagement trend direction before signing contracts has saved us from several bad deals."</p>
+          <p class="testimonial-quote">
+            "For our research team, GrowthGod is indispensable. The structured
+            datasets and API access let us integrate social signals into our
+            quantitative models without any manual data work."
+          </p>
           <div class="testimonial-author">
-            <span class="testimonial-name">Priya Nair</span>
-            <span class="testimonial-role">Partnerships Lead, Formline Studio</span>
+            <div class="author-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">DL</div>
+            <div>
+              <div class="author-name">Dr. Dana L.</div>
+              <div class="author-role">Research Lead, market intelligence firm</div>
+            </div>
           </div>
         </div>
 
@@ -1274,107 +1510,93 @@
     </div>
   </section>
 
-  <!-- ── CTA ────────────────────────────────────────────── -->
-  <section class="cta-section">
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-section" id="contact">
     <div class="container">
-      <div class="cta-inner">
+      <div class="cta-box">
+        <div class="section-label">Get Started</div>
         <h2 class="cta-heading">Ready to see GrowthGod in action?</h2>
-        <p class="cta-sub">Get a 30-minute walkthrough with real data from your industry. No pitch deck, no sales pressure — just the product doing what it does.</p>
-        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-          <a href="mailto:demo@growthgod.com" class="btn-primary">Request a Demo &rarr;</a>
-          <a href="#features" class="btn-outline">Explore Features</a>
+        <p class="cta-sub">
+          Request a personalized demo with your data. Our solutions team will
+          walk you through the platform and answer any questions about data
+          sourcing, compliance, or API integration.
+        </p>
+        <div class="cta-actions">
+          <a href="mailto:hello@growthgod.com" class="btn-primary">Request a Demo &#8594;</a>
+          <a href="mailto:hello@growthgod.com" class="btn-outline">Talk to Sales</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Footer ─────────────────────────────────────────── -->
+  <!-- ═══ FOOTER ═══ -->
   <footer>
     <div class="container">
       <div class="footer-grid">
-
+        <!-- Brand col -->
         <div class="footer-brand">
-          <div class="logo">GrowthGod</div>
-          <p>Social media intelligence for teams that need to know what the market is doing before the market tells them.</p>
+          <div class="footer-logo">
+            <div class="logo-mark">G</div>
+            GrowthGod
+          </div>
+          <p class="footer-tagline">
+            Social Media Intelligence Platform for marketing teams,
+            agencies, and researchers who need reliable data at scale.
+          </p>
+          <div class="footer-contact">
+            <a href="mailto:hello@growthgod.com">hello@growthgod.com</a>
+          </div>
         </div>
 
-        <div class="footer-col">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="#">Features</a></li>
-            <li><a href="#">Pricing</a></li>
-            <li><a href="#">Changelog</a></li>
-            <li><a href="#">API Access</a></li>
+        <!-- Product -->
+        <div>
+          <div class="footer-col-title">Product</div>
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#use-cases">Use Cases</a></li>
+            <li><a href="#contact">Pricing</a></li>
+            <li><a href="#contact">API Access</a></li>
           </ul>
         </div>
 
-        <div class="footer-col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Press</a></li>
+        <!-- Company -->
+        <div>
+          <div class="footer-col-title">Company</div>
+          <ul class="footer-links">
+            <li><a href="#contact">About Us</a></li>
+            <li><a href="#contact">Blog</a></li>
+            <li><a href="#contact">Careers</a></li>
+            <li><a href="#contact">Press Kit</a></li>
+            <li><a href="mailto:hello@growthgod.com">Contact</a></li>
           </ul>
         </div>
 
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-            <li><a href="#">Security</a></li>
+        <!-- Legal -->
+        <div>
+          <div class="footer-col-title">Legal</div>
+          <ul class="footer-links">
+            <li><a href="#contact">Privacy Policy</a></li>
+            <li><a href="#contact">Terms of Service</a></li>
+            <li><a href="#contact">Data Usage Policy</a></li>
+            <li><a href="#contact">Cookie Policy</a></li>
+            <li><a href="#contact">GDPR / CCPA</a></li>
           </ul>
         </div>
-
-        <div class="footer-col">
-          <h4>Connect</h4>
-          <ul>
-            <li><a href="#">X / Twitter</a></li>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Status</a></li>
-          </ul>
-        </div>
-
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 GrowthGod. All rights reserved.</p>
-        <p style="color: var(--text-muted); font-size: 13px;">Built for serious teams.</p>
+        <div class="footer-copy">
+          &copy; 2026 GrowthGod, Inc. All rights reserved.
+        </div>
+        <div class="footer-legal">
+          <a href="#contact">Privacy Policy</a>
+          <a href="#contact">Terms of Service</a>
+          <a href="mailto:hello@growthgod.com">Contact Us</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- ── JS ─────────────────────────────────────────────── -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('mobileMenu');
-      menu.classList.toggle('open');
-    }
-
-    // Close mobile menu on outside click
-    document.addEventListener('click', function(e) {
-      const menu = document.getElementById('mobileMenu');
-      const toggle = document.querySelector('.nav-toggle');
-      if (menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) {
-        menu.classList.remove('open');
-      }
-    });
-
-    // Smooth scroll offset for fixed nav
-    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-      anchor.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 60;
-          const top = target.getBoundingClientRect().top + window.scrollY - offset - 24;
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        }
-      });
-    });
-  </script>
 </body>
 </html>
