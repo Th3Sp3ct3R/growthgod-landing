@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GrowthGod API v1 documentation — publish posts and stories, engage media, search locations, manage DMs and profile across your connected Instagram accounts." />
+  <meta name="robots" content="index, follow" />
+  <title>GrowthGod API Reference</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:#0a0e1a; --bg-card:#111827; --bg-elevated:#1a2236;
+      --gold:#f5a623; --gold-light:#fbbf50; --gold-dim:rgba(245,166,35,0.15); --gold-glow:rgba(245,166,35,0.06);
+      --white:#ffffff; --text:#e2e8f0; --muted:#94a3b8;
+      --border:rgba(255,255,255,0.08); --border-hover:rgba(255,255,255,0.14);
+      --shadow:0 4px 24px rgba(0,0,0,0.45); --radius:12px; --nav-h:68px;
+      --green:#22c55e; --violet:#a78bfa;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    html { scroll-behavior:smooth; font-size:16px; scroll-padding-top:calc(var(--nav-h) + 16px); }
+    body { background-color:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
+    body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+    a { color:inherit; text-decoration:none; } ul { list-style:none; }
+    p code, td code, li code { background:var(--bg-elevated); border:1px solid var(--border); border-radius:6px; padding:1px 7px;
+      font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:0.85em; color:var(--gold-light); }
+
+    .container { max-width:1140px; margin:0 auto; padding:0 24px; }
+    .container-docs { max-width:980px; margin:0 auto; padding:0 24px; }
+    .section-label { display:inline-block; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+      color:var(--gold); background:var(--gold-dim); border:1px solid rgba(245,166,35,0.3); border-radius:30px; padding:4px 14px; margin-bottom:18px; }
+    .section-title { font-size:clamp(1.75rem,3.5vw,2.25rem); font-weight:700; color:var(--white); line-height:1.2; letter-spacing:-0.02em; }
+    .section-subtitle { font-size:1.0625rem; color:var(--muted); margin-top:12px; line-height:1.7; }
+    .section { padding:72px 0; border-top:1px solid var(--border); }
+
+    nav.top { position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:100; background:rgba(10,14,26,0.88);
+      backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; height:100%; }
+    .nav-logo { display:flex; align-items:center; gap:10px; font-size:1.125rem; font-weight:700; color:var(--white); letter-spacing:-0.01em; }
+    .nav-logo .logo-mark { width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,var(--gold),#d4821a); color:#0a0e1a; border-radius:9px; font-weight:800; font-size:1rem; }
+    .nav-links { display:flex; align-items:center; gap:28px; font-size:0.9375rem; font-weight:500; color:var(--muted); }
+    .nav-links a:hover { color:var(--white); } .nav-links a.active { color:var(--gold); }
+    .nav-cta { background:linear-gradient(135deg,var(--gold),#d4821a); color:#0a0e1a !important; padding:9px 20px; border-radius:10px; font-weight:600; }
+    .nav-cta:hover { filter:brightness(1.08); }
+
+    .docs-hero { padding-top:calc(var(--nav-h) + 80px); padding-bottom:56px; position:relative; overflow:hidden; }
+    .docs-hero::before { content:''; position:absolute; top:-220px; left:50%; transform:translateX(-50%);
+      width:720px; height:480px; background:radial-gradient(closest-side,var(--gold-glow),transparent); pointer-events:none; }
+    .live-badge { display:inline-flex; align-items:center; gap:8px; margin-left:12px; vertical-align:middle; font-size:12px; font-weight:600;
+      color:var(--green); background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); padding:3px 11px; border-radius:30px; }
+
+    pre { background:#0d1322; border:1px solid var(--border); border-radius:10px; padding:18px 20px; overflow-x:auto;
+      font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; line-height:1.65; color:#cbd5e1; white-space:pre; }
+    pre .k { color:#93c5fd; } pre .s { color:#fbbf24; } pre .n { color:#a78bfa; } pre .g { color:#86efac; } pre .c { color:#64748b; }
+    .code-label { font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; letter-spacing:0.08em;
+      text-transform:uppercase; color:var(--muted); margin-bottom:8px; display:block; }
+
+    .endpoint { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:26px 28px; margin-top:22px; transition:border-color .2s ease; }
+    .endpoint:hover { border-color:var(--border-hover); }
+    .endpoint-path { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:10px; }
+    .method { font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; font-weight:700; letter-spacing:.06em; padding:4px 11px; border-radius:6px; }
+    .method.get { color:var(--green); background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.35); }
+    .method.post { color:var(--violet); background:rgba(167,139,250,0.12); border:1px solid rgba(167,139,250,0.35); }
+    .ep-url { font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:14px; font-weight:500; color:var(--white); word-break:break-all; }
+    .endpoint-desc { color:var(--muted); font-size:.9375rem; max-width:720px; }
+
+    .params-table { width:100%; border-collapse:collapse; margin-top:16px; font-size:.875rem; }
+    .params-table th { text-align:left; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:8px 14px; border-bottom:1px solid var(--border-hover); }
+    .params-table td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; color:var(--text); }
+    .params-table tr:last-child td { border-bottom:none; }
+    .type { color:var(--muted); font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; }
+    .scope-chip { font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; border-radius:20px; padding:2px 9px; margin-left:10px; vertical-align:middle; }
+    .scope-read { color:var(--green); background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); }
+    .scope-engage { color:var(--gold-light); background:var(--gold-dim); border:1px solid rgba(245,166,35,.35); }
+    .scope-dm { color:var(--violet); background:rgba(167,139,250,.12); border:1px solid rgba(167,139,250,.35); }
+
+    .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:32px; }
+    .info-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
+    .info-card h3 { color:var(--white); font-size:1rem; margin-bottom:8px; }
+    .info-card p { color:var(--muted); font-size:.9rem; line-height:1.65; }
+    .callout { background:var(--gold-glow); border:1px solid rgba(245,166,35,0.25); border-radius:10px; padding:16px 20px; margin-top:20px; font-size:.9rem; color:var(--text); }
+    .callout strong { color:var(--gold-light); }
+
+    .btn-primary { display:inline-block; background:linear-gradient(135deg,var(--gold),#d4821a); color:#0a0e1a; font-weight:600; font-size:.95rem; padding:13px 30px; border-radius:11px; transition:filter .2s ease; }
+    .btn-primary:hover { filter:brightness(1.08); }
+    .btn-outline { display:inline-block; border:1px solid var(--border-hover); color:var(--text); font-weight:500; font-size:.95rem; padding:13px 30px; border-radius:11px; transition:all .2s ease; }
+    .btn-outline:hover { border-color:var(--gold); color:var(--gold-light); }
+
+    .cta-section { padding:88px 0 96px; }
+    .cta-box { background:linear-gradient(160deg,var(--bg-elevated),var(--bg-card)); border:1px solid rgba(245,166,35,0.22); border-radius:20px; padding:56px 40px; text-align:center; box-shadow:var(--shadow); }
+    .cta-heading { font-size:clamp(1.5rem,3vw,2rem); color:var(--white); font-weight:700; letter-spacing:-0.02em; }
+    .cta-sub { color:var(--muted); max-width:520px; margin:14px auto 28px; }
+    .cta-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+    footer { border-top:1px solid var(--border); padding:36px 0; font-size:.875rem; color:var(--muted); }
+    .footer-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .footer-inner nav-inline a { margin-left:22px; } .footer-inner nav-inline a:first-child { margin-left:0; }
+    .footer-inner a:hover { color:var(--white); }
+
+    @media (max-width:768px) {
+      .nav-links { display:none; }
+      .endpoint { padding:20px 18px; }
+      .params-table th:nth-child(3), .params-table td:nth-child(3) { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><div class="logo-mark">G</div>GrowthGod</a>
+        <ul class="nav-links">
+          <li><a href="#quickstart" class="active">Quickstart</a></li>
+          <li><a href="#endpoints">Endpoints</a></li>
+          <li><a href="mcp.html">MCP Server</a></li>
+          <li><a href="index.html#features">Product</a></li>
+          <li><a href="index.html#contact" class="nav-cta">Request Demo</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <header class="docs-hero">
+    <div class="container-docs">
+      <div class="section-label">Developer Documentation</div>
+      <h1 class="section-title">GrowthGod API <span class="live-badge">● Live · v1</span></h1>
+      <p class="section-subtitle">
+        Full Instagram operations over REST: publish feed posts and stories, like/comment/save,
+        follow and DM, edit profiles, search venues by location, pull hashtag and explore feeds —
+        every call executes on <strong style="color:var(--text)">your own connected accounts</strong>.
+        Keys are scoped read / engage / dm.
+      </p>
+    </div>
+  </header>
+
+  <!-- ═══ QUICKSTART ═══ -->
+  <section class="section" id="quickstart" style="border-top:none;padding-top:0;">
+    <div class="container-docs">
+
+      <h2 class="section-title" style="font-size:1.35rem;">Quickstart</h2>
+      <p class="section-subtitle">
+        1&nbsp;· Connect an Instagram account in the dashboard.<br/>
+        2&nbsp;· Create an API key (Settings → API keys, or <code>POST /api/api-keys</code>). The plaintext
+        key <code>igk_live_…</code> is shown once — store it.<br/>
+        3&nbsp;· Call the API with that key.
+      </p>
+
+      <span class="code-label" style="margin-top:26px;">List your connected accounts</span>
+<pre>curl https://api.growthgod.com/api/v1/me \
+  -H <span class="s">"Authorization: Bearer igk_live_YOUR_KEY"</span></pre>
+
+      <span class="code-label" style="margin-top:18px;">Search Instagram venues near Lagos</span>
+<pre>curl "https://api.growthgod.com/api/locations/search?q=Lagos&amp;lat=6.5244&amp;lng=3.3792&amp;account_id=ACCOUNT_UUID" \
+  -H <span class="s">"Authorization: Bearer igk_live_YOUR_KEY"</span></pre>
+
+<pre>{
+  <span class="k">"account"</span>: { <span class="k">"id"</span>: <span class="s">"94c5…"</span>, <span class="k">"username"</span>: <span class="s">"yourhandle"</span> },
+  <span class="k">"venues"</span>: [
+    { <span class="k">"location_id"</span>: <span class="s">"112658980490949"</span>, <span class="k">"name"</span>: <span class="s">"Lagos, Nigeria"</span>,
+      <span class="k">"latitude"</span>: <span class="n">6.5841985</span>, <span class="k">"longitude"</span>: <span class="n">3.396008</span> },
+    …
+  ],
+  <span class="k">"count"</span>: <span class="n">30</span>
+}</pre>
+
+      <span class="code-label" style="margin-top:18px;">Post a story</span>
+<pre>curl -X POST https://api.growthgod.com/api/v1/accounts/ACCOUNT_UUID/publish/story \
+  -H <span class="s">"Authorization: Bearer igk_live_YOUR_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{ "media_url": "https://cdn.example.com/clip.mp4", "media_type": "video" }'</span></pre>
+    </div>
+  </section>
+
+  <!-- ═══ AUTH ═══ -->
+  <section class="section" id="authentication">
+    <div class="container-docs">
+      <div class="section-label">Authentication</div>
+      <h2 class="section-title" style="font-size:1.35rem;">Per-User API Keys</h2>
+      <p class="section-subtitle">
+        Every key belongs to one dashboard user and can only operate Instagram accounts that
+        user has connected. Requests run on those accounts' sessions — never shared infrastructure.
+        Send the key either way:
+      </p>
+<pre style="margin-top:20px;">Authorization: Bearer igk_live_…
+<span class="c"># or</span>
+x-api-key: igk_live_…</pre>
+
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>Scopes</h3>
+          <p><code>read</code> — GET data · <code>engage</code> — likes/comments/follows/publishing ·
+             <code>dm</code> — direct messages. Request scopes at key creation.</p>
+        </div>
+        <div class="info-card">
+          <h3>Hardening options</h3>
+          <p>Keys support expiry, IP allowlists, and mandatory HMAC request signatures for
+             high-trust integrations.</p>
+        </div>
+        <div class="info-card">
+          <h3>Ownership</h3>
+          <p>Every <code>account_id</code> is verified against your user. Another user's account id
+             returns <code>403</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ENDPOINTS ═══ -->
+  <section class="section" id="endpoints">
+    <div class="container-docs">
+      <div class="section-label">Reference</div>
+      <h2 class="section-title">Endpoints</h2>
+      <p class="section-subtitle">Base URL: <code>https://api.growthgod.com</code> · All bodies are JSON.</p>
+
+      <!-- Publishing -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/publish/photo</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">{ image_url, caption?, location_id? } → publishes a single image. Returns <code>media_id</code> + permalink.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/publish/video</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">{ video_url, caption?, cover_url?, is_reel? } → feed video or Reel.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/publish/carousel</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">{ media_urls[2–10] (jpg/png/mp4 auto-detected), caption? } → album post.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/publish/story</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">{ media_url, media_type: "photo"|"video" } → story. Videos need MP4.</p>
+      </div>
+
+      <!-- Story ops -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/stories/{storyMediaId}/{action}</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">
+          <code>view</code> {target_user_id} · <code>like</code> / <code>emoji</code> {owner_user_id, emoji?} ·
+          <code>poll</code> {poll_id, vote:0|1} · <code>slider</code> {slider_id, value:0–1} ·
+          <code>quiz</code> {quiz_id, answer_index:int}
+        </p>
+      </div>
+
+      <!-- Media -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/media/{mediaId}/like | comment | save | unsave</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">comment takes { text }. Returns action status.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/media/{mediaId}/likers | comments</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Who liked it; comment threads with authors.</p>
+      </div>
+
+      <!-- Graph -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/users/{targetUserId}/{action}</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc"><code>follow</code> · <code>unfollow</code> · <code>block</code> · <code>unblock</code> ·
+           <code>mute</code> {posts?,stories?} · <code>unmute</code></p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/users/{targetUserId}/{what}</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc"><code>info</code> · <code>feed</code> · <code>stories</code> · <code>highlights</code> ·
+           <code>followers</code> · <code>following</code> · <code>chaining</code>. Accepts numeric pk or handle for info/feed.</p>
+      </div>
+
+      <!-- Discovery -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/search/users?q=</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Instagram user search by handle/name fragment.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/feed/hashtag?tag= | feed/explore</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Hashtag media grids and the discover tab feed.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/music/trending | music/search?q= | music/moods</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Trending audio, track search, mood catalogs (Reels-ready).</p>
+      </div>
+
+      <!-- Locations -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/locations/search?q=&amp;lat=&amp;lng=</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Live venue search (Facebook Places IDs). Coordinates sharpen results; country/city names work when coords are nearby.</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/accounts/{accountId}/locations/{locationId}/feed?cursor=</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Recent posts at a venue + poster list with <code>has_more</code>/<code>next_cursor</code> pagination. Also available without prefix at <code>/api/locations/*</code>.</p>
+      </div>
+
+      <!-- Profile -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/accounts/{accountId}/profile</span><span class="scope-chip scope-engage">engage</span></div>
+        <p class="endpoint-desc">{ username?, display_name?, bio?, external_url?, email?, phone? } — omitted fields unchanged. Also <code>/profile/photo</code> ({image_url} or {remove:true}) and <code>/profile/privacy</code> ({mode:"private"|"public"}).</p>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method get">GET</span><span class="ep-url">/api/v1/me · /api/v1/accounts/{accountId}/me</span><span class="scope-chip scope-read">read</span></div>
+        <p class="endpoint-desc">Your user + connected account list · the IG identity behind one account.</p>
+      </div>
+
+      <!-- DM -->
+      <div class="endpoint">
+        <div class="endpoint-path"><span class="method post">POST</span><span class="ep-url">/api/v1/dm/{accountId}/send</span><span class="scope-chip scope-dm">dm</span></div>
+        <p class="endpoint-desc">{ target_user_id, text }. Also <code>/unsend</code> {thread_id,item_id},
+           <code>GET /inbox</code>, <code>GET /thread/:threadId</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ERRORS ═══ -->
+  <section class="section" id="errors">
+    <div class="container-docs">
+      <div class="section-label">Errors</div>
+      <h2 class="section-title" style="font-size:1.35rem;">Error Format</h2>
+      <p class="section-subtitle">Stable machine-readable codes — branch on <code>error</code>, show <code>message</code> to humans.</p>
+      <table class="params-table" style="margin-top:22px;">
+        <tr><th>Status</th><th>error</th><th>Meaning / fix</th></tr>
+        <tr><td>400</td><td><code>invalid_request text</code></td><td>Missing/invalid parameter — see message.</td></tr>
+        <tr><td>401</td><td><code>No authorization token</code></td><td>Missing/expired/revoked key.</td></tr>
+        <tr><td>403</td><td><code>insufficient_scope</code></td><td>Key lacks required scope (read/engage/dm).</td></tr>
+        <tr><td>403</td><td><code>Account not found, not owned by you…</code></td><td>Wrong or foreign account_id.</td></tr>
+        <tr><td>423</td><td><code>ACCOUNT_KILL_SWITCH_ACTIVE</code></td><td>Safety lockout (checkpoint/action-block). Account needs attention in dashboard.</td></tr>
+        <tr><td>503</td><td><code>instagram_session_expired</code></td><td>Reconnect this account to refresh its session.</td></tr>
+        <tr><td>503</td><td><code>instagram_checkpoint</code></td><td>Clear IG's challenge for this account, then retry.</td></tr>
+        <tr><td>500</td><td><code>internal_error</code></td><td>Retry with backoff; persistent errors → support.</td></tr>
+      </table>
+      <div class="callout">
+        <strong>Account-safety model:</strong> risky signals trip a per-account circuit breaker that
+        pauses all actions until cleared — protecting your account over your integration's uptime.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STATUS ═══ -->
+  <section class="section" id="status">
+    <div class="container-docs">
+      <div class="section-label">Availability</div>
+      <h2 class="section-title" style="font-size:1.35rem;">Access Tiers</h2>
+      <table class="params-table" style="margin-top:22px;">
+        <tr><th>Tier</th><th>Who</th><th>Scopes</th><th>Notes</th></tr>
+        <tr><td>Dashboard</td><td>All GrowthGod users</td><td>read · engage · dm</td><td>Create up to 5 active keys; full v1 surface on your own accounts.</td></tr>
+        <tr><td>Partner</td><td>Agencies / tool builders</td><td>Custom</td><td>Managed multi-account programs — talk to us.</td></tr>
+      </table>
+      <div class="callout" style="margin-top:26px;">
+        <strong>Verified live:</strong> location venue search returning 30 venues for "Lagos",
+        feed pagination, auth + ownership gates, and per-account session-health error mapping.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-section">
+    <div class="container-docs">
+      <div class="cta-box">
+        <div class="section-label">Get Access</div>
+        <h2 class="cta-heading">Build on your GrowthGod accounts</h2>
+        <p class="cta-sub">
+          Create a key in your dashboard and ship. Agencies building managed programs —
+          we'll set you up directly.
+        </p>
+        <div class="cta-actions">
+          <a href="mailto:hello@growthgod.com?subject=GrowthGod%20API" class="btn-primary">Talk to Us About Partner Access &#8594;</a>
+          <a href="mcp.html" class="btn-outline">Explore the MCP Server</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>&copy; 2026 GrowthGod, Inc.</div>
+        <nav-inline>
+          <a href="index.html">Home</a>
+          <a href="api.html">API</a>
+          <a href="mcp.html">MCP</a>
+          <a href="mailto:hello@growthgod.com">Contact</a>
+        </nav-inline>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

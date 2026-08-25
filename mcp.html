@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GrowthGod MCP server documentation — connect GrowthGod social intelligence to Claude, Cursor, and any MCP client." />
+  <meta name="robots" content="index, follow" />
+  <title>GrowthGod MCP Server</title>
+  <style>
+    /* ── Reset & Base ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0a0e1a;
+      --bg-card:     #111827;
+      --bg-elevated: #1a2236;
+      --gold:        #f5a623;
+      --gold-light:  #fbbf50;
+      --gold-dim:    rgba(245,166,35,0.15);
+      --gold-glow:   rgba(245,166,35,0.06);
+      --white:       #ffffff;
+      --text:        #e2e8f0;
+      --muted:       #94a3b8;
+      --border:      rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.14);
+      --shadow:      0 4px 24px rgba(0,0,0,0.45);
+      --radius:      12px;
+      --nav-h:       68px;
+      --green:       #22c55e;
+      --violet:      #a78bfa;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: calc(var(--nav-h) + 16px); }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    p code, td code, li code {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.85em;
+      color: var(--gold-light);
+    }
+
+    /* ── Layout ──────────────────────────────────────── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .container-docs { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid rgba(245,166,35,0.3);
+      border-radius: 30px;
+      padding: 4px 14px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle { font-size: 1.0625rem; color: var(--muted); margin-top: 12px; line-height: 1.7; }
+    .section { padding: 72px 0; border-top: 1px solid var(--border); }
+
+    /* ── Navigation ──────────────────────────────────── */
+    nav.top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 100;
+      background: rgba(10,14,26,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 1.125rem; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+    .nav-logo .logo-mark {
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--gold), #d4821a);
+      color: #0a0e1a;
+      border-radius: 9px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; font-size: 0.9375rem; font-weight: 500; color: var(--muted); }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--gold); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--gold), #d4821a);
+      color: #0a0e1a !important;
+      padding: 9px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .nav-cta:hover { filter: brightness(1.08); }
+
+    /* ── Docs Hero ───────────────────────────────────── */
+    .docs-hero {
+      padding-top: calc(var(--nav-h) + 80px);
+      padding-bottom: 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .docs-hero::before {
+      content: '';
+      position: absolute;
+      top: -220px; left: 50%;
+      transform: translateX(-50%);
+      width: 720px; height: 480px;
+      background: radial-gradient(closest-side, var(--gold-glow), transparent);
+      pointer-events: none;
+    }
+
+    /* ── Code Blocks ─────────────────────────────────── */
+    pre {
+      background: #0d1322;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #cbd5e1;
+      white-space: pre;
+    }
+    pre .k { color: #93c5fd; } /* keys */
+    pre .s { color: #fbbf24; } /* strings */
+    pre .n { color: #a78bfa; } /* numbers */
+    pre .g { color: #86efac; } /* booleans */
+    pre .c { color: #64748b; } /* comments */
+
+    .code-label {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ── Tool Cards ──────────────────────────────────── */
+    .tool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      margin-top: 22px;
+      transition: border-color 0.2s ease;
+    }
+    .tool-card:hover { border-color: var(--border-hover); }
+
+    .tool-name {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      word-break: break-all;
+    }
+    .tool-desc { color: var(--muted); font-size: 0.9375rem; max-width: 720px; margin-bottom: 4px; }
+
+    /* ── Tables ──────────────────────────────────────── */
+    .params-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.875rem;
+    }
+    .params-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border-hover);
+    }
+    .params-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text);
+    }
+    .params-table tr:last-child td { border-bottom: none; }
+    .req { color: var(--gold-light); font-weight: 600; font-size: 11px; letter-spacing: 0.05em; }
+    .opt { color: var(--muted); font-weight: 500; font-size: 11px; letter-spacing: 0.05em; }
+    .type { color: var(--muted); font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+
+    /* ── Info Cards / Grids ──────────────────────────── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 32px; }
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .info-card h3 { color: var(--white); font-size: 1rem; margin-bottom: 8px; }
+    .info-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+
+    .compat-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .compat-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 9px 20px;
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+
+    .callout {
+      background: var(--gold-glow);
+      border: 1px solid rgba(245,166,35,0.25);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .callout strong { color: var(--gold-light); }
+
+    .chat-example {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-top: 18px;
+    }
+    .chat-user {
+      font-size: 0.95rem;
+      color: var(--text);
+      padding-left: 16px;
+      border-left: 2px solid var(--violet);
+    }
+    .chat-agent {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 14px;
+      padding-left: 16px;
+      border-left: 2px solid var(--gold);
+    }
+    .chat-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .chat-user .chat-tag { color: var(--violet); }
+    .chat-agent .chat-tag { color: var(--gold); }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold), #d4821a);
+      color: #0a0e1a;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 13px 30px;
+      border-radius: 11px;
+      transition: filter 0.2s ease;
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-outline {
+      display: inline-block;
+      border: 1px solid var(--border-hover);
+      color: var(--text);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 13px 30px;
+      border-radius: 11px;
+      transition: all 0.2s ease;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    /* ── CTA ─────────────────────────────────────────── */
+    .cta-section { padding: 88px 0 96px; }
+    .cta-box {
+      background: linear-gradient(160deg, var(--bg-elevated), var(--bg-card));
+      border: 1px solid rgba(245,166,35,0.22);
+      border-radius: 20px;
+      padding: 56px 40px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .cta-heading { font-size: clamp(1.5rem, 3vw, 2rem); color: var(--white); font-weight: 700; letter-spacing: -0.02em; }
+    .cta-sub { color: var(--muted); max-width: 520px; margin: 14px auto 28px; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-inner nav-inline a { margin-left: 22px; }
+    .footer-inner nav-inline a:first-child { margin-left: 0; }
+    .footer-inner a:hover { color: var(--white); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .tool-card { padding: 20px 18px; }
+      .params-table th:nth-child(3), .params-table td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="top">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-mark">G</div>
+          GrowthGod
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#setup">Setup</a></li>
+          <li><a href="#tools">Tools</a></li>
+          <li><a href="api.html">REST API</a></li>
+          <li><a href="index.html#features">Product</a></li>
+          <li><a href="index.html#contact" class="nav-cta">Request Demo</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <header class="docs-hero">
+    <div class="container-docs">
+      <div class="section-label">Developer Documentation</div>
+      <h1 class="section-title">GrowthGod MCP Server</h1>
+      <p class="section-subtitle">
+        The Model Context Protocol server exposes GrowthGod's full social-intelligence
+        surface as native tools for your AI agent. Ask Claude or Cursor to benchmark a
+        competitor, sweep brand mentions, or pull trend data — no glue code required.
+      </p>
+
+      <span class="code-label" style="margin-top:30px;">One-line install (Claude Code)</span>
+<pre>claude mcp add growthgod \
+  --env GROWTHGOD_API_KEY=<span class="s">gg_live_YOUR_API_KEY</span> \
+  -- npx -y <span class="s">@growthgod/mcp</span> serve</pre>
+    </div>
+  </header>
+
+  <!-- ═══ WHAT IT DOES ═══ -->
+  <section class="section" id="overview" style="border-top:none;">
+    <div class="container-docs">
+      <div class="section-label">Overview</div>
+      <h2 class="section-title" style="font-size:1.35rem;">Your agent, wired into the data</h2>
+      <p class="section-subtitle">
+        The MCP server wraps the
+        <a href="api.html" style="color:var(--gold-light); text-decoration:underline;">GrowthGod REST API</a>
+        in typed tools and streams results back to the model. Runs locally via stdio —
+        your API key never leaves the machine except in requests to api.growthgod.com.
+      </p>
+
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>Typed tools</h3>
+          <p>Seven schema-validated tools with descriptions tuned so agents pick them correctly without few-shot examples.</p>
+        </div>
+        <div class="info-card">
+          <h3>Local transport</h3>
+          <p>stdio-based server launched on demand by your MCP client. No daemon, no ports.</p>
+        </div>
+        <div class="info-card">
+          <h3>Same quotas</h3>
+          <p>Tool calls consume your plan's REST quota identically. Rate-limit errors surface as readable tool errors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SETUP ═══ -->
+  <section class="section" id="setup">
+    <div class="container-docs">
+      <div class="section-label">Setup</div>
+      <h2 class="section-title" style="font-size:1.35rem;">Installation &amp; Configuration</h2>
+      <p class="section-subtitle">Requirements: Node.js 20+, a GrowthGod API key (<code>gg_live_…</code> or <code>gg_test_…</code>).</p>
+
+      <span class="code-label" style="margin-top:28px;">Claude Desktop · claude_desktop_config.json</span>
+<pre>{
+  <span class="k">"mcpServers"</span>: {
+    <span class="s">"growthgod"</span>: {
+      <span class="k">"command"</span>: <span class="s">"npx"</span>,
+      <span class="k">"args"</span>: [<span class="s">"-y"</span>, <span class="s">"@growthgod/mcp"</span>, <span class="s">"serve"</span>],
+      <span class="k">"env"</span>: {
+        <span class="k">"GROWTHGOD_API_KEY"</span>: <span class="s">"gg_live_YOUR_API_KEY"</span>
+      }
+    }
+  }
+}</pre>
+
+      <span class="code-label" style="margin-top:28px;">Generic MCP client config</span>
+      <p style="color:var(--muted); font-size:0.9rem;">Any client supporting the stdio transport uses the same shape — command <code>npx</code>, args <code>-y @growthgod/mcp serve</code>, with the key in <code>env</code>.</p>
+
+      <div class="callout">
+        <strong>Sandbox first:</strong> set <code>GROWTHGOD_API_KEY</code> to a <code>gg_test_…</code> key
+        while evaluating. Sandbox calls return fixture data and never touch live quota.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TOOLS ═══ -->
+  <section class="section" id="tools">
+    <div class="container-docs">
+      <div class="section-label">Reference</div>
+      <h2 class="section-title">Tools</h2>
+      <p class="section-subtitle">All tools are read-only. Exports return job handles that the agent can poll.</p>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_list_platforms</div>
+        <p class="tool-desc">Returns supported platforms and per-platform coverage notes. Call this first when platform slugs are unknown.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td colspan="3" style="color:var(--muted);"><em>No inputs.</em></td></tr>
+        </table>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_get_account_profile</div>
+        <p class="tool-desc">Public profile snapshot for one account: bio, category, verification state, follower counts, posting cadence.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td><code>platform</code></td><td class="type">string</td><td>Platform slug from <code>gg_list_platforms</code>. Required.</td></tr>
+          <tr><td><code>handle</code></td><td class="type">string</td><td>Account handle without <code>@</code>. Required.</td></tr>
+        </table>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_get_account_stats</div>
+        <p class="tool-desc">Time-series followers, engagement rate, views, and post volume — the benchmarking workhorse.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td><code>platform</code></td><td class="type">string</td><td>Platform slug. Required.</td></tr>
+          <tr><td><code>handle</code></td><td class="type">string</td><td>Account handle. Required.</td></tr>
+          <tr><td><code>period</code></td><td class="type">enum</td><td><code>7d</code>, <code>30d</code>, <code>90d</code>, <code>1y</code>. Default <code>30d</code>.</td></tr>
+          <tr><td><code>granularity</code></td><td class="type">enum</td><td><code>daily</code> or <code>weekly</code>. Auto-chosen if omitted.</td></tr>
+        </table>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_search_mentions</div>
+        <p class="tool-desc">Keyword/boolean search over public mentions across platforms with date, language, and sort controls.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td><code>query</code></td><td class="type">string</td><td>Keyword, quoted phrase, or boolean expression. Required.</td></tr>
+          <tr><td><code>platforms</code></td><td class="type">array</td><td>Optional subset of platform slugs.</td></tr>
+          <tr><td><code>from</code> / <code>to</code></td><td class="type">date</td><td>Inclusive window, ISO 8601. Max span 180 days.</td></tr>
+          <tr><td><code>sort</code></td><td class="type">enum</td><td><code>relevance</code>, <code>recent</code>, <code>engagement</code>. Default <code>relevance</code>.</td></tr>
+          <tr><td><code>limit</code></td><td class="type">int</td><td>10–100. Default 25.</td></tr>
+        </table>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_analyze_sentiment</div>
+        <p class="tool-desc">Sentiment scores for raw texts or mention IDs, with aggregate distribution. Use after <code>gg_search_mentions</code> to gauge brand mood.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td><code>mention_ids</code></td><td class="type">array</td><td>Up to 500 IDs. Provide this XOR <code>texts</code>. Required.</td></tr>
+          <tr><td><code>texts</code></td><td class="type">array</td><td>Raw strings (≤2,000 chars each). Provide this XOR <code>mention_ids</code>. Required.</td></tr>
+        </table>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_get_trends</div>
+        <p class="tool-desc">Rising topics, hashtags, and sounds ranked by acceleration for a category/region — the early-signal feed.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td><code>category</code></td><td class="type">string</td><td>e.g. <code>fashion</code>, <code>fitness</code>, <code>beauty</code>, <code>food-beverage</code>. Default <code>all</code>.</td></tr>
+          <tr><td><code>region</code></td><td class="type">string</td><td>ISO country code. Default <code>global</code>.</td></tr>
+          <tr><td><code>period</code></td><td class="type">enum</td><td><code>24h</code>, <code>7d</code> (default), <code>30d</code>.</td></tr>
+        </table>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-name">gg_export_dataset</div>
+        <p class="tool-desc">Queue an async CSV/JSONL/Parquet export of mentions or account stats. Returns a job ID; poll it in follow-up turns until <code>ready</code>.</p>
+        <table class="params-table">
+          <tr><th>Input</th><th>Type</th><th>Description</th></tr>
+          <tr><td><code>source</code></td><td class="type">enum</td><td><code>mentions</code> or <code>account_stats</code>. Required.</td></tr>
+          <tr><td><code>filter</code></td><td class="type">object</td><td>Mentions-search-shaped filter, or <code>{platform, handle, period}</code> for stats. Required.</td></tr>
+          <tr><td><code>format</code></td><td class="type">enum</td><td><code>csv</code>, <code>jsonl</code>, <code>parquet</code>. Default <code>csv</code>.</td></tr>
+        </table>
+
+        <span class="code-label" style="margin-top:18px;">Example result</span>
+<pre>{
+  <span class="k">"job_id"</span>: <span class="s">"exp_01J9ZK..."</span>,
+  <span class="k">"status"</span>: <span class="s">"queued"</span>,
+  <span class="g">"note"</span>: <span class="s">"Poll gg_export_dataset status via job_id. Typical completion: 1–4 min."</span>
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXAMPLES ═══ -->
+  <section class="section" id="examples">
+    <div class="container-docs">
+      <div class="section-label">In Practice</div>
+      <h2 class="section-title" style="font-size:1.35rem;">What this looks like in chat</h2>
+
+      <div class="chat-example">
+        <div class="chat-user">
+          <div class="chat-tag">You</div>
+          Compare our handle vs our biggest competitor on TikTok — followers and engagement over the last 90 days.
+        </div>
+        <div class="chat-agent">
+          <div class="chat-tag">Agent</div>
+          Pulling both profiles… <code>gg_get_account_stats</code> × 2 (period 90d, weekly). Your engagement rate is up 18% while theirs flattened after June 14 — want me to export the underlying series as CSV?
+        </div>
+      </div>
+
+      <div class="chat-example">
+        <div class="chat-user">
+          <div class="chat-tag">You</div>
+          Sweep mentions of "cold brew" from July and tell me how sentiment shifted.
+        </div>
+        <div class="chat-agent">
+          <div class="chat-tag">Agent</div>
+          <code>gg_search_mentions</code> (July window, engagement sort) → 412 hits →
+          <code>gg_analyze_sentiment</code> on all IDs. Positive share rose 61% → 74%; two spike days align with creator collabs.
+        </div>
+      </div>
+
+      <div class="chat-example">
+        <div class="chat-user">
+          <div class="chat-tag">You</div>
+          What's accelerating in fitness right now?
+        </div>
+        <div class="chat-agent">
+          <div class="chat-tag">Agent</div>
+          <code>gg_get_trends</code> (fitness, global, 7d): "kettlebell flows" +340% velocity,
+          "zone 2 walking" plateauing. Three rising sounds attached.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMPATIBILITY ═══ -->
+  <section class="section" id="compatibility">
+    <div class="container-docs">
+      <div class="section-label">Compatibility</div>
+      <h2 class="section-title" style="font-size:1.35rem;">Works anywhere MCP works</h2>
+      <div class="compat-grid">
+        <span class="compat-chip">Claude Desktop</span>
+        <span class="compat-chip">Claude Code</span>
+        <span class="compat-chip">Cursor</span>
+        <span class="compat-chip">Windsurf</span>
+        <span class="compat-chip">OpenAI Codex CLI</span>
+        <span class="compat-chip">Any MCP 2024-11+ stdio client</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-section">
+    <div class="container-docs">
+      <div class="cta-box">
+        <div class="section-label">Get Access</div>
+        <h2 class="cta-heading">Wire your agent into social intelligence</h2>
+        <p class="cta-sub">
+          Grab a sandbox key, add the server config above, and start asking questions.
+          Live keys ship with Pro and Enterprise plans.
+        </p>
+        <div class="cta-actions">
+          <a href="mailto:hello@growthgod.com?subject=GrowthGod%20MCP%20Access" class="btn-primary">Request API Access &#8594;</a>
+          <a href="api.html" class="btn-outline">Read the REST API Docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>&copy; 2026 GrowthGod, Inc.</div>
+        <nav-inline>
+          <a href="index.html">Home</a>
+          <a href="api.html">API</a>
+          <a href="mcp.html">MCP</a>
+          <a href="mailto:hello@growthgod.com">Contact</a>
+        </nav-inline>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
